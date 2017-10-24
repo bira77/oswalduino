@@ -36,7 +36,7 @@ void setRGBTEMPLColor (int color);
     TEMPERATURE READING
 *********************************************************************************************************/
 
-int temperatureSensor0, temperatureSensor1;     // Temperatura        //ALTERACOES BIRA
+float temperatureSensor0, temperatureSensor1;     // Temperatura        //ALTERACOES BIRA
 void measureTemperature()
 {
     // MEASURE TEMPERATURE FROM SENSOR 0
@@ -47,7 +47,7 @@ void measureTemperature()
     Vo = analogRead(PIN_THERMISTOR_0);
     Rt = TEMP_R * (1023.0 / (float)Vo - 1.0);
     logRt = log(Rt);
-    temperatureSensor0 = (int) ((1.0 / (TEMP_C1 + TEMP_C2*logRt + TEMP_C3*logRt*logRt*logRt)) - 273.15);
+    temperatureSensor0 = ((1.0 / (TEMP_C1 + TEMP_C2*logRt + TEMP_C3*logRt*logRt*logRt)) - 273.15);
     
     
     //Serial.print(" ");
@@ -66,8 +66,8 @@ void measureTemperature()
     Vo1 = analogRead(PIN_THERMISTOR_1);
     Rt1 = TEMP_R * (1023.0 / (float)Vo1 - 1.0);
     logRt1 = log(Rt1);
-    temperatureSensor1 = (int) ((1.0 / (TEMP_C1 + TEMP_C2*logRt1 + TEMP_C3*logRt1*logRt1*logRt1)) - 273.15);
-    temperatureSensor0 = (int) ((1.0 / (TEMP_C1 + TEMP_C2*logRt +  TEMP_C3*logRt *logRt *logRt )) - 273.15);
+    temperatureSensor1 = ((1.0 / (TEMP_C1 + TEMP_C2*logRt1 + TEMP_C3*logRt1*logRt1*logRt1)) - 273.15);
+   
     
 
 
@@ -140,41 +140,23 @@ void loop()
     lcd.setCursor(0, 0); //Posiciona o cursor na décima quarta coluna(13) e na segunda linha(1) do LCD
     lcd.print("Temp0");
     lcd.print(": ");
-    lcd.print(temperatureSensor0); //Escreve o valor atual da variável de contagem no LCD
+    lcd.print(temperatureSensor0,1); //Escreve o valor atual da variável de contagem no LCD
     lcd.print((char)223);
     lcd.print("C");
-
-    
+  
     //Mostra Temperatura Sensor 1 no LCD
     lcd.setCursor(0, 1); //Posiciona o cursor na décima quarta coluna(13) e na segunda linha(1) do LCD
     lcd.print("Temp1");
     lcd.print(": ");
-    lcd.print(temperatureSensor1); //Escreve o valor atual da variável de contagem no LCD
+    lcd.print(temperatureSensor1,1); //Escreve o valor atual da variável de contagem no LCD
     lcd.print((char)223);
     lcd.print("C");
-    
-    
+        
     //Mostra Temperatura Sensor 1 no LCD
     lcd.setCursor(1, 2); //Posiciona o cursor na décima quarta coluna(13) e na segunda linha(1) do LCD
     lcd.print("Temp1");
     lcd.print(": ");
-    //lcd.print(temperatureSensor1); //Escreve o valor atual da variável de contagem no LCD
-    //lcd.print((char)223);
-    //lcd.print("C");
-   
-  /*  
-    lcd.clear();
-  //Posiciona o cursor na coluna 3, linha 0;
-  lcd.setCursor(3, 0);
-  //Envia o texto entre aspas para o LCD
-  lcd.print("FILIPEFLOP");
-  lcd.setCursor(3, 1);
-  lcd.print(" LCD 16x2");
-  delay(5000);
-  */
   
-
-
     // read the state of the pushbutton value:
     buttonState = digitalRead(BUTTON_PIN);
 
@@ -184,14 +166,14 @@ void loop()
     {
      Serial.println("NIVEL RESERVATORIO BAIXO");
      digitalWrite(PIN_BUZZER_WATERLEVEL, HIGH);
-     lcd.setCursor(0, 3); 
+     lcd.setCursor(0, 2); 
      lcd.print("RES. OK");
     }
     else
     {
      Serial.println("NIVEL RESERVATORIO NORMAL");
      digitalWrite(PIN_BUZZER_WATERLEVEL, LOW);
-     lcd.setCursor(0, 3); 
+     lcd.setCursor(0, 2); 
      lcd.print("RES. BAIXO");
     }
     //
